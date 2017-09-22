@@ -1102,6 +1102,10 @@
         slider.touch.originalPos = el.position();
         var orig = e.originalEvent,
         touchPoints = (typeof orig.changedTouches !== 'undefined') ? orig.changedTouches : [orig];
+
+        // https://stackoverflow.com/questions/41723250/bxslider-error-invalidpointerid-on-android-6-0-1
+        var chromePointerEvents = typeof PointerEvent === 'function'; if (chromePointerEvents) { if (orig.pointerId === undefined) { return; } }
+        
         // record the starting touch x, y coordinates
         slider.touch.start.x = touchPoints[0].pageX;
         slider.touch.start.y = touchPoints[0].pageY;
@@ -1147,9 +1151,13 @@
      */
     var onTouchMove = function(e) {
       var orig = e.originalEvent,
-      touchPoints = (typeof orig.changedTouches !== 'undefined') ? orig.changedTouches : [orig],
+      touchPoints = (typeof orig.changedTouches !== 'undefined') ? orig.changedTouches : [orig];
+
+      // https://stackoverflow.com/questions/41723250/bxslider-error-invalidpointerid-on-android-6-0-1
+      var chromePointerEvents = typeof PointerEvent === 'function'; if (chromePointerEvents) { if (orig.pointerId === undefined) { return; } }
+              
       // if scrolling on y axis, do not prevent default
-      xMovement = Math.abs(touchPoints[0].pageX - slider.touch.start.x),
+      var xMovement = Math.abs(touchPoints[0].pageX - slider.touch.start.x),
       yMovement = Math.abs(touchPoints[0].pageY - slider.touch.start.y),
       value = 0,
       change = 0;
@@ -1189,6 +1197,10 @@
       touchPoints = (typeof orig.changedTouches !== 'undefined') ? orig.changedTouches : [orig],
       value       = 0,
       distance    = 0;
+
+      // https://stackoverflow.com/questions/41723250/bxslider-error-invalidpointerid-on-android-6-0-1
+      var chromePointerEvents = typeof PointerEvent === 'function'; if (chromePointerEvents) { if (orig.pointerId === undefined) { return; } }
+
       // record end x, y positions
       slider.touch.end.x = touchPoints[0].pageX;
       slider.touch.end.y = touchPoints[0].pageY;
